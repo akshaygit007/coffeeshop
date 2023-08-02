@@ -1,5 +1,5 @@
 pipeline {
-    agent {label "JENKINSSSS"}
+    agent {label "JENKINSS"}
     stages {
         stage('Git Clone') {
             steps {
