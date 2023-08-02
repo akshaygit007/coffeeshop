@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'us-east-1'
+        S3_BUCKET_NAME = 'jenkins-prod-ddeploy'
+        CLOUDFRONT_DISTRIBUTION_ID = 'E3BZ2DQG2C068S'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Deploy to S3') {
+            steps {
+                // Use the AWS CLI or AWS SDK to upload the index.html to the S3 bucket
+                sh "aws s3 cp index.html s3://${S3_BUCKET_NAME}/index.html"
+            }
+        }
+
+        stage('Invalidate CloudFront Cache') {
+            steps {
+                // Use the AWS CLI or AWS SDK to invalidate the CloudFront cache
+                sh "aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'"
+            }
+        }
+    }
+}
