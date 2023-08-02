@@ -17,14 +17,14 @@ pipeline {
         stage('Deploy to S3') {
             steps {
                 // Use the AWS CLI or AWS SDK to upload the index.html to the S3 bucket
-                sh "aws s3 cp index.html s3://${S3_BUCKET_NAME}/index.html"
+                sh "/usr/bin/aws s3 cp index.html s3://${S3_BUCKET_NAME}/index.html"
             }
         }
 
         stage('Invalidate CloudFront Cache') {
             steps {
                 // Use the AWS CLI or AWS SDK to invalidate the CloudFront cache
-                sh "aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'"
+                sh "/usr/bin/aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'"
             }
         }
     }
